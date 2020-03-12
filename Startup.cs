@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using DBIT.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace IT_Companies
+namespace DBIT
 {
     public class Startup
     {
@@ -23,6 +25,8 @@ namespace IT_Companies
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<DBITCompanyContext>(options => options.UseSqlServer(connection));
             services.AddControllersWithViews();
         }
 
@@ -50,7 +54,7 @@ namespace IT_Companies
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Countries}/{action=Index}/{id?}");
             });
         }
     }
